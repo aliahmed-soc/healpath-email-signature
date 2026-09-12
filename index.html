@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HealPath Email Signature Maker</title>
+<style>
+  :root{
+    --bg:#f5f6f9;
+    --panel:#ffffff;
+    --ink:#1c1f26;
+    --muted:#6b7183;
+    --line:#e2e5ee;
+    --brand:#1B3EAC;
+    --brand-soft:#eef1fb;
+    --code-bg:#0f172a;
+    --code-ink:#dbe3f4;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121419; --panel:#1b1e25; --ink:#eceef3; --muted:#9aa1b2;
+      --line:#2c313b; --brand-soft:#1e2536; --code-bg:#0b0e14; --code-ink:#cfd7e8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121419; --panel:#1b1e25; --ink:#eceef3; --muted:#9aa1b2;
+    --line:#2c313b; --brand-soft:#1e2536; --code-bg:#0b0e14; --code-ink:#cfd7e8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    line-height:1.5; padding:28px 18px 60px;
+  }
+  .wrap{max-width:940px;margin:0 auto}
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px;
+  }
+  .brand{background:#fff;border-radius:7px;padding:7px 12px;line-height:0;display:inline-block}
+  .brand img{display:block;height:30px;width:auto}
+  .copyright{font-size:12px;color:var(--muted)}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:-0.4px}
+  .sub{color:var(--muted);margin:0 0 26px;font-size:15px;max-width:60ch}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:20px}
+  .panel h2{font-size:15px;margin:0 0 14px;color:var(--brand);font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+  input,select{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;
+    background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit;
+  }
+  input:focus,select:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+  .preview-shell{background:#ffffff;border:1px solid var(--line);border-radius:10px;padding:22px;overflow-x:auto}
+  .note{font-size:13px;color:var(--muted);margin-top:12px}
+  pre{
+    background:var(--code-bg);color:var(--code-ink);padding:16px;border-radius:9px;
+    overflow-x:auto;font-size:12px;line-height:1.55;margin:0;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre;
+  }
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+  button{
+    background:var(--brand);color:#fff;border:0;border-radius:7px;padding:9px 16px;
+    font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  button:hover{opacity:.9}
+  button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  ol{padding-left:20px;margin:0}
+  ol li{margin-bottom:9px;font-size:14px}
+  code.inline{background:var(--brand-soft);color:var(--brand);padding:1px 6px;border-radius:4px;font-size:12.5px}
+  .warn{background:var(--brand-soft);border-left:3px solid var(--brand);padding:12px 14px;border-radius:0 7px 7px 0;font-size:13.5px;margin-top:14px}
+  table{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand"><img src="https://healpath-email-signature.vercel.app/logo.png" alt="HealPath" height="30"></div>
+    <div class="copyright">&copy; <span id="year"></span> HealPath. All Rights Reserved.</div>
+  </div>
+
+  <h1>HealPath email signature</h1>
+  <p class="sub">Type your own name, job title, email and phone. Press Copy signature. Paste it into Zoho Mail. The company parts are already set for you.</p>
+
+  <div class="panel">
+    <h2>Your details</h2>
+    <div class="grid">
+      <div><label for="f-name">Full name</label><input id="f-name" value="" placeholder="e.g. Ali Ahmed" autofocus></div>
+      <div><label for="f-title">Job title</label><input id="f-title" value="" placeholder="e.g. IT Support Specialist"></div>
+      <div><label for="f-email">Email</label><input id="f-email" value="" placeholder="name@healpath.care"></div>
+      <div><label for="f-phone">Phone</label><input id="f-phone" value="" placeholder="+20 1xx xxx xxxx"></div>
+      <div><label for="f-addr">Your office address (optional)</label><input id="f-addr" value="29 Street 207, Degla, Maadi, Cairo, Egypt"></div>
+      <div><label for="f-site">Website</label><input id="f-site" value="healpath.care"></div>
+      <div>
+        <label for="f-mode">Logo style</label>
+        <select id="f-mode">
+          <option value="image">Real logo image (recommended)</option>
+          <option value="text">Text logo — if the image is blocked</option>
+        </select>
+      </div>
+      <div id="logo-field"><label for="f-logo">Logo image link (must be a public web link)</label><input id="f-logo" value="https://healpath-email-signature.vercel.app/logo.png"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="row">
+      <h2 style="margin:0">Preview</h2>
+      <button id="copy-rich">Copy signature</button>
+    </div>
+    <div class="preview-shell" id="preview"></div>
+    <p class="note">The text logo is made from letters, so it never breaks. The image logo only shows if the link points to a real public image file.</p>
+  </div>
+
+  <div class="panel">
+    <h2>How to add it in Zoho Mail</h2>
+    <ol>
+      <li>Fill in your name, job title, email and phone above. Check the preview looks right.</li>
+      <li>Press <b>Copy signature</b>, the button next to the word Preview.</li>
+      <li>Open <b>mail.zoho.com</b>. Click the gear icon at the top right, then <b>Settings</b>.</li>
+      <li>In the left menu click <b>Mail</b>, then <b>Signature</b>. Click <b>New Signature</b>.</li>
+      <li>In <b>Signature Name</b> type <b>HealPath</b>. This box cannot be left empty.</li>
+      <li>Click inside the big empty box below it. Press <b>Ctrl + V</b>. You should see the blue HealPath text and your name in blue.</li>
+      <li>For <b>Signature position</b> choose <b>Place signature above quoted content</b>.</li>
+      <li>In both <b>Associated From addresses</b> boxes, type your HealPath email address. Keep the tick on <b>Add signature to all my email replies and forwards</b>.</li>
+      <li>Click <b>Save</b>. Send a test email to yourself and open it on your phone as well.</li>
+    </ol>
+    <div class="warn">
+      <b>Already have an old signature?</b> Open it, click in the box, press Ctrl + A then Delete so it is fully empty, and only then paste the new one. Old text left behind will keep showing on every email.
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  document.getElementById("year").textContent = (new Date()).getFullYear();
+
+  // If a logo.png sits next to this page (your Vercel deploy), use it.
+  // If not (local file or preview), keep the healpath.care logo.
+  (function autoLogo(){
+    if (location.protocol !== "http:" && location.protocol !== "https:") return;
+    var url = location.origin + location.pathname.replace(/[^\/]*$/, "") + "logo.png";
+    var field = document.getElementById("f-logo");
+    var original = field.value;
+    var probe = new Image();
+    probe.onload = function(){
+      if (field.value === original) { field.value = url; render(); }
+    };
+    probe.src = url;
+  })();
+  var ids = ["name","title","email","phone","addr","site","logo","mode"];
+  var el = {};
+  ids.forEach(function(k){ el[k] = document.getElementById("f-"+k); });
+  var preview = document.getElementById("preview");
+
+  function esc(s){ return String(s).replace(/&(?!amp;|#\d+;)/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function telHref(p){ return "tel:" + String(p).replace(/[^\d+]/g,""); }
+
+  function build(){
+    var name  = esc(el.name.value.trim())  || "Your Name";
+    var title = esc(el.title.value.trim()) || "Your Job Title";
+    var email = esc(el.email.value.trim()) || "name@healpath.care";
+    var phone = esc(el.phone.value.trim()) || "+20 1xx xxx xxxx";
+    var addr  = esc(el.addr.value.trim());
+    var site  = esc(el.site.value.trim().replace(/^https?:\/\//,""));
+    var logo  = esc(el.logo.value.trim());
+
+    var logoCell;
+    if (el.mode.value === "image") {
+      logoCell =
+ '      <img src="' + logo + '" alt="HealPath" width="165" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;">\n';
+    } else {
+      logoCell =
+ '      <div style="font-family:Arial,Helvetica,sans-serif;font-size:28px;font-weight:bold;line-height:28px;letter-spacing:-0.5px;white-space:nowrap;"><span style="color:#1B3EAC;">H</span><span style="color:#1c1f26;">ealPath</span></div>\n'
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#8b90a0;letter-spacing:1.6px;padding-top:5px;white-space:nowrap;">Primary Care Redefined</div>\n';
+    }
+
+    return '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">\n'
++'  <tr>\n'
++'    <td style="padding:0 22px 0 0;vertical-align:top;">\n'
++ logoCell
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:18px;color:#8b90a0;padding-top:8px;">\n'
++'        WhatsApp <a href="https://wa.me/201019003440" style="color:#8b90a0;text-decoration:none;">+20 101 900 3440</a><br>\n'
++'        <a href="mailto:customercare@healpath.care" style="color:#8b90a0;text-decoration:none;">customercare@healpath.care</a><br>\n'
++'        <a href="https://' + site + '" style="color:#1B3EAC;text-decoration:none;font-weight:bold;">' + site + '</a>\n'
++'      </div>\n'
++'    </td>\n'
++'    <td style="padding:0 0 0 22px;border-left:2px solid #e3e6ef;vertical-align:top;">\n'
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:bold;color:#1B3EAC;line-height:20px;">' + name + '</div>\n'
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7183;line-height:17px;padding-bottom:6px;">' + title + '</div>\n'
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:19px;color:#3a3a3a;">\n'
++'        <a href="mailto:' + email + '" style="color:#3a3a3a;text-decoration:none;">' + email + '</a><br>\n'
++'        <a href="' + telHref(el.phone.value) + '" style="color:#3a3a3a;text-decoration:none;">' + phone + '</a>' + (addr ? '<br>\n        ' + addr : '') + '\n'
++'      </div>\n'
++'    </td>\n'
++'  </tr>\n'
++'  <tr>\n'
++'    <td colspan="2" style="padding-top:12px;">\n'
++'      <div style="font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:13px;color:#b0b5c0;border-top:1px solid #e3e6ef;padding-top:8px;">\n'
++'        This email and any files with it are confidential and meant only for the person named above. If it reached you by mistake, please delete it and tell the sender.\n'
++'      </div>\n'
++'    </td>\n'
++'  </tr>\n'
++'</table>';
+  }
+
+  function render(){
+    document.getElementById("logo-field").style.display = (el.mode.value === "image") ? "" : "none";
+    preview.innerHTML = build();
+  }
+
+  ids.forEach(function(k){
+    el[k].addEventListener("input", render);
+    el[k].addEventListener("change", render);
+  });
+  render();
+
+  document.getElementById("copy-rich").addEventListener("click", function(){
+    var btn = this;
+    var ok = function(){ btn.textContent = "Copied — now paste in Zoho"; setTimeout(function(){ btn.textContent = "Copy signature"; }, 2400); };
+    var selectCopy = function(){
+      var r = document.createRange(); r.selectNodeContents(preview);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try{ document.execCommand("copy"); s.removeAllRanges(); ok(); }
+      catch(err){ btn.textContent = "Select it by hand and press Ctrl+C"; }
+    };
+    try{
+      if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        var html = preview.innerHTML;
+        var item = new ClipboardItem({
+          "text/html": new Blob([html], {type:"text/html"}),
+          "text/plain": new Blob([preview.innerText], {type:"text/plain"})
+        });
+        navigator.clipboard.write([item]).then(ok, selectCopy);
+      } else { selectCopy(); }
+    }catch(e){ selectCopy(); }
+  });
+})();
+</script>
+</body>
+</html>
